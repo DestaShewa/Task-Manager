@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { TASK_CATEGORIES } from "../config/constants"; // Import the categories
 
 function TaskForm({ onAddTask }) {
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("Medium");
   const [dueDate, setDueDate] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(TASK_CATEGORIES[0]); // Default to the first category
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,22 +13,13 @@ function TaskForm({ onAddTask }) {
       alert("Please provide a title and a due date.");
       return;
     }
-
-    const newTask = {
-      title,
-      priority,
-      dueDate,
-      category: category.trim() || "General", // Default category if empty
-      completed: false,
-    };
-
+    const newTask = { title, priority, dueDate, category, completed: false };
     onAddTask(newTask);
-
-    // Reset form fields
+    // Reset form
     setTitle("");
     setPriority("Medium");
     setDueDate("");
-    setCategory("");
+    setCategory(TASK_CATEGORIES[0]);
   };
 
   return (
@@ -65,17 +57,22 @@ function TaskForm({ onAddTask }) {
             className="w-full p-3 border border-gray-300 rounded-lg"
           />
         </div>
+        {/* MODIFIED: Category is now a dropdown */}
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-1">
             Category
           </label>
-          <input
-            type="text"
-            placeholder="e.g., Work"
+          <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             className="w-full p-3 border border-gray-300 rounded-lg"
-          />
+          >
+            {TASK_CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
       <button

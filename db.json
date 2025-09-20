@@ -3,26 +3,42 @@
     {
       "id": "1",
       "title": "Finalize project proposal",
-      "completed": false,
+      "completed": true,
       "priority": "High",
       "dueDate": "2025-10-25",
       "category": "Work"
     },
     {
-      "id": "4",
-      "title": "Schedule a dentist appointment",
-      "completed": false,
-      "priority": "Low",
-      "dueDate": "2025-10-30",
+      "id": "2",
+      "title": "Buy groceries for the week",
+      "completed": true,
+      "priority": "Medium",
+      "dueDate": "2025-10-22",
       "category": "Personal"
     },
     {
-      "id": "4ab2",
-      "title": "Report",
+      "id": "3",
+      "title": "Prepare for the React exam",
+      "completed": false,
       "priority": "High",
-      "dueDate": "2025-09-03",
-      "category": "work",
-      "completed": false
+      "dueDate": "2025-11-10",
+      "category": "Study"
+    },
+    {
+      "title": "repo",
+      "priority": "Medium",
+      "dueDate": "2025-09-02",
+      "category": "Work",
+      "completed": false,
+      "id": "N4_Mfoc"
+    },
+    {
+      "title": "is work",
+      "priority": "Medium",
+      "dueDate": "2025-09-10",
+      "category": "Personal",
+      "completed": false,
+      "id": "ZrVeGhX"
     }
   ]
 }
