@@ -1,0 +1,28 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Finalize project proposal",
+      "completed": false,
+      "priority": "High",
+      "dueDate": "2025-10-25",
+      "category": "Work"
+    },
+    {
+      "id": "4",
+      "title": "Schedule a dentist appointment",
+      "completed": false,
+      "priority": "Low",
+      "dueDate": "2025-10-30",
+      "category": "Personal"
+    },
+    {
+      "id": "4ab2",
+      "title": "Report",
+      "priority": "High",
+      "dueDate": "2025-09-03",
+      "category": "work",
+      "completed": false
+    }
+  ]
+}
