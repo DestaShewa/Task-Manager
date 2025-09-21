@@ -1,12 +1,20 @@
-# React + Vite
+Task Manager Pro – A Modern React & Tailwind Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+A quick demo GIF showing adding a task, dragging & dropping, and switching dark mode.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🚀 Live Demo & Project Overview
 
-## Expanding the ESLint configuration
+Live Demo: https://your-live-demo-url.vercel.app/
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Task Manager Pro is a feature-rich task management app built with React, Tailwind CSS, and a REST API. It demonstrates core professional web development skills:
+
+State management
+
+REST API integration
+
+Responsive UI/UX
+
+Advanced productivity features
+
+This project was built to showcase production-ready skills for freelance and full-time web development roles.
