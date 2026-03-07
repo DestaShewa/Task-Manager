@@ -1,4 +1,8 @@
 import React from "react";
+import {
+  ExclamationTriangleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 
 function ConfirmationModal({
   title,
@@ -9,22 +13,39 @@ function ConfirmationModal({
   cancelText = "Cancel",
 }) {
   return (
-    // Modal Backdrop
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
-      {/* Modal Content */}
-      <div className="bg-white rounded-lg shadow-2xl p-6 m-4 w-full max-w-sm">
-        <h3 className="text-xl font-bold text-gray-800">{title}</h3>
-        <p className="mt-2 text-gray-600">{message}</p>
-        <div className="mt-6 flex justify-end space-x-3">
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex justify-center items-center z-[60] p-4 animate-fade-in">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden border border-slate-200 dark:border-slate-800 animate-slide-up">
+        <div className="p-6">
+          <div className="flex justify-between items-start mb-4">
+            <div className="p-3 bg-rose-50 dark:bg-rose-900/20 rounded-2xl text-rose-600">
+              <ExclamationTriangleIcon className="w-6 h-6" />
+            </div>
+            <button
+              onClick={onCancel}
+              className="p-1 text-slate-400 hover:text-slate-600 transition-colors"
+            >
+              <XMarkIcon className="w-5 h-5" />
+            </button>
+          </div>
+
+          <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">
+            {title}
+          </h3>
+          <p className="text-slate-500 dark:text-slate-400 leading-relaxed">
+            {message}
+          </p>
+        </div>
+
+        <div className="p-6 pt-0 flex gap-3">
           <button
             onClick={onCancel}
-            className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+            className="flex-1 px-4 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-semibold hover:bg-slate-200 dark:hover:bg-slate-750 transition-colors"
           >
             {cancelText}
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            className="flex-1 px-4 py-3 bg-rose-600 text-white rounded-xl font-bold hover:bg-rose-700 shadow-lg shadow-rose-500/20 active:scale-95 transition-all"
           >
             {confirmText}
           </button>

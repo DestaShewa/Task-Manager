@@ -1,74 +1,139 @@
 import React from "react";
 
 // A helper function to get the color for the priority badge
-const getPriorityClass = (priority) => {
+
+import {
+  PencilSquareIcon,
+  TrashIcon,
+  CalendarIcon,
+  TagIcon,
+} from "@heroicons/react/24/outline";
+import { GripVertical } from "lucide-react";
+import { motion } from "framer-motion";
+
+const getPriorityStyles = (priority) => {
   switch (priority) {
     case "High":
-      return "bg-red-500 text-white";
+      return "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400";
     case "Medium":
-      return "bg-yellow-500 text-white";
+      return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400";
     case "Low":
-      return "bg-green-500 text-white";
+      return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400";
     default:
-      return "bg-gray-400 text-white";
+      return "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400";
   }
 };
 
-function TaskItem({ task, onToggleComplete, onDeleteTask, onEditTask }) {
+const MotionDiv = motion.div;
+
+function TaskItem({
+  task,
+  onToggleComplete,
+  onDeleteTask,
+  onEditTask,
+  dragHandleProps,
+}) {
+  const subtasksCount = task.subtasks?.length || 0;
+  const completedSubtasks =
+    task.subtasks?.filter((s) => s.completed).length || 0;
+  const progress =
+    subtasksCount > 0
+      ? Math.round((completedSubtasks / subtasksCount) * 100)
+      : null;
+
   return (
-    // ADDED DARK MODE CLASSES
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm hover:shadow-lg dark:hover:shadow-gray-700/50 transition-shadow duration-200 border border-gray-200 dark:border-gray-700">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            checked={task.completed}
-            onChange={() => onToggleComplete(task.id, task.completed)}
-            className="h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-900 text-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
-          />
-          <span
-            className={`ml-4 text-lg font-medium ${
-              task.completed
-                ? "text-gray-400 dark:text-gray-500 line-through"
-                : "text-gray-800 dark:text-gray-200"
-            }`}
-          >
-            {task.title}
-          </span>
+    <MotionDiv
+      layout
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      className="group bg-white dark:bg-slate-900/50 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-primary-200 dark:hover:border-primary-900 transitional-all duration-300 hover:shadow-xl hover:shadow-primary-500/5 mb-4 flex items-center gap-3"
+    >
+      {/* Drag Handle */}
+      <div
+        {...dragHandleProps}
+        className="p-1 cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-400 dark:text-slate-700 dark:hover:text-slate-600 transition-colors"
+      >
+        <GripVertical size={20} />
+      </div>
+
+      <div className="flex items-start justify-between gap-4 flex-1">
+        <div className="flex items-start flex-1 gap-4">
+          <div className="mt-1">
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => onToggleComplete(task.id, task.completed)}
+              className="h-6 w-6 rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-primary-600 focus:ring-primary-500 cursor-pointer transition-all"
+            />
+          </div>
+          <div className="flex-1">
+            <h3
+              className={`text-lg font-semibold transition-all ${task.completed
+                ? "text-slate-400 dark:text-slate-600 line-through"
+                : "text-slate-800 dark:text-white"
+                }`}
+            >
+              {task.title}
+            </h3>
+
+            <div className="mt-3 flex flex-wrap items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400">
+              <span
+                className={`px-2.5 py-0.5 rounded-md text-xs uppercase tracking-wider font-bold ${getPriorityStyles(task.priority)}`}
+              >
+                {task.priority}
+              </span>
+
+              <div className="flex items-center gap-1.5">
+                <TagIcon className="w-4 h-4" />
+                <span>{task.category || "General"}</span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <CalendarIcon className="w-4 h-4" />
+                <span>{new Date(task.dueDate).toLocaleDateString()}</span>
+              </div>
+            </div>
+
+            {/* Subtasks Progress */}
+            {subtasksCount > 0 && (
+              <div className="mt-4">
+                <div className="flex justify-between items-center mb-1.5">
+                  <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tight">
+                    Subtasks: {completedSubtasks}/{subtasksCount}
+                  </span>
+                  <span className="text-xs font-bold text-primary-600">
+                    {progress}%
+                  </span>
+                </div>
+                <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                  <div
+                    className="bg-primary-500 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-        <div className="flex items-center space-x-3">
+
+        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={() => onEditTask(task)}
-            className="text-blue-500 hover:text-blue-700 dark:hover:text-blue-400"
-            aria-label={`Edit task: ${task.title}`}
+            className="p-2 text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-all"
+            aria-label="Edit task"
           >
-            {/* ... SVG ... */}
+            <PencilSquareIcon className="w-5 h-5" />
           </button>
           <button
             onClick={() => onDeleteTask(task.id)}
-            className="text-red-500 hover:text-red-700 dark:hover:text-red-400"
-            aria-label={`Delete task: ${task.title}`}
+            className="p-2 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-all"
+            aria-label="Delete task"
           >
-            {/* ... SVG ... */}
+            <TrashIcon className="w-5 h-5" />
           </button>
         </div>
       </div>
-      <div className="mt-3 ml-9 pl-1 flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-        <span
-          className={`px-2 py-1 text-xs font-semibold rounded-full ${getPriorityClass(
-            task.priority
-          )}`}
-        >
-          {task.priority}
-        </span>
-        {task.category && (
-          <span className="px-2 py-1 text-xs font-medium rounded-full bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200">
-            {task.category}
-          </span>
-        )}
-        <span>Due: {new Date(task.dueDate).toLocaleDateString()}</span>
-      </div>
-    </div>
+    </MotionDiv>
   );
 }
 

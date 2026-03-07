@@ -38,17 +38,17 @@ function TaskList({
                   <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
-                    {...provided.dragHandleProps}
+                    // {...provided.dragHandleProps} <-- Moved to a specific icon in TaskItem
                     // Add a subtle lift and shadow effect while dragging
-                    className={`${
-                      snapshot.isDragging ? "shadow-2xl scale-105" : "shadow-sm"
-                    } transition-all`}
+                    className={`${snapshot.isDragging ? "shadow-2xl scale-105" : "shadow-sm"
+                      } transition-all`}
                   >
                     <TaskItem
                       task={task}
                       onToggleComplete={onToggleComplete}
                       onDeleteTask={onDeleteTask}
                       onEditTask={onEditTask}
+                      dragHandleProps={provided.dragHandleProps}
                     />
                   </div>
                 )}

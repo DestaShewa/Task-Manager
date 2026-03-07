@@ -9,14 +9,6 @@
       "category": "Work"
     },
     {
-      "id": "2",
-      "title": "Buy groceries for the week",
-      "completed": true,
-      "priority": "Medium",
-      "dueDate": "2025-10-22",
-      "category": "Personal"
-    },
-    {
       "id": "3",
       "title": "Prepare for the React exam",
       "completed": false,
@@ -25,20 +17,40 @@
       "category": "Study"
     },
     {
-      "title": "repo",
-      "priority": "Medium",
-      "dueDate": "2025-09-02",
-      "category": "Work",
-      "completed": false,
-      "id": "N4_Mfoc"
-    },
-    {
-      "title": "is work",
+      "title": "The work",
       "priority": "Medium",
       "dueDate": "2025-09-10",
       "category": "Personal",
       "completed": false,
-      "id": "ZrVeGhX"
+      "id": "ZrVeGhX",
+      "subtasks": []
+    },
+    {
+      "title": "build",
+      "priority": "Medium",
+      "dueDate": "2026-03-07T10:10",
+      "category": "Personal",
+      "completed": false,
+      "subtasks": [],
+      "id": "zgkOha1"
+    },
+    {
+      "title": "sport today push up",
+      "priority": "Medium",
+      "dueDate": "2026-03-08T00:07",
+      "category": "Health",
+      "completed": false,
+      "subtasks": [],
+      "id": "mtJftU5"
+    },
+    {
+      "title": "Read",
+      "priority": "Medium",
+      "dueDate": "2026-03-07T00:10",
+      "category": "Study",
+      "completed": false,
+      "subtasks": [],
+      "id": "o9gvwZk"
     }
   ]
 }

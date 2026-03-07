@@ -16,35 +16,53 @@ function NotificationManager({ tasks = [] }) {
       Notification.requestPermission();
     }
 
-    // 3. Find tasks that are due today and haven't been notified yet
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Normalize to the start of the day
+    // 3. Track notified tasks in localStorage
+    const savedNotified = JSON.parse(localStorage.getItem('notifiedTasks') || '{}');
+    let updatedNotified = { ...savedNotified };
+    let hasChanges = false;
 
-    const dueTodayTasks = tasks.filter((task) => {
+    const now = new Date();
+
+    tasks.forEach((task) => {
+      if (task.completed) return;
+
       const dueDate = new Date(task.dueDate);
-      dueDate.setHours(0, 0, 0, 0); // Normalize task due date
+      const timeDiff = dueDate.getTime() - now.getTime();
+      const oneHourInMs = 60 * 60 * 1000;
 
-      return (
-        dueDate.getTime() === today.getTime() &&
-        !task.completed &&
-        !sentNotifications.has(task.id)
-      );
+      // Logic for "Due Today" (if not already notified)
+      const isDueToday = dueDate.toDateString() === now.toDateString();
+      const todayKey = `today_${task.id}`;
+
+      if (isDueToday && !updatedNotified[todayKey]) {
+        if (Notification.permission === "granted") {
+          new Notification("Task Due Today!", {
+            body: `Don't forget: ${task.title}`,
+            icon: "/pwa-192x192.png",
+          });
+          updatedNotified[todayKey] = true;
+          hasChanges = true;
+        }
+      }
+
+      // Logic for "Due in 1 hour" (if time is within 1 hour and not already notified)
+      const hourKey = `hour_${task.id}`;
+      if (timeDiff > 0 && timeDiff <= oneHourInMs && !updatedNotified[hourKey]) {
+        if (Notification.permission === "granted") {
+          new Notification("Task Deadline Alert!", {
+            body: `⚠ Task "${task.title}" due in 1 hour`,
+            icon: "/pwa-192x192.png",
+          });
+          updatedNotified[hourKey] = true;
+          hasChanges = true;
+        }
+      }
     });
 
-    // 4. Send notifications for those tasks
-    if (Notification.permission === "granted" && dueTodayTasks.length > 0) {
-      dueTodayTasks.forEach((task) => {
-        new Notification("Task Due Today!", {
-          body: task.title,
-          icon: "/pwa-192x192.png", // Re-use our PWA icon
-          badge: "/pwa-192x192.png",
-        });
-
-        // Add the task ID to our set to prevent re-notifying
-        setSentNotifications((prev) => new Set(prev).add(task.id));
-      });
+    if (hasChanges) {
+      localStorage.setItem('notifiedTasks', JSON.stringify(updatedNotified));
     }
-  }, [tasks, sentNotifications]); // Rerun when tasks change
+  }, [tasks]); // Rerun when tasks change
 
   // This component does not render anything
   return null;
