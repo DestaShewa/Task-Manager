@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import axios from "axios";
+import api from "./services/api";
 
 // Import all our components
 import Header from "./components/Header";
@@ -18,7 +18,8 @@ import confetti from "canvas-confetti";
 import NotificationManager from "./components/NotificationManager";
 
 // The URL for our simplified backend
-const API_URL = "http://localhost:5000/tasks";
+// API service handles URLs and fallbacks
+// const API_URL = "http://localhost:5000/tasks";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -37,8 +38,11 @@ function App() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await axios.get(API_URL);
-        setTasks(response.data);
+        const data = await api.getTasks();
+        setTasks(data);
+        if (api.isDemoMode()) {
+          setError("Running in Demo Mode: Your changes will be saved locally in this browser.");
+        }
       } catch (error) {
         console.error("Error fetching tasks:", error);
         setError("Failed to fetch tasks. Please ensure the backend server is running.");
@@ -52,8 +56,11 @@ function App() {
   // --- API Functions ---
   const addTask = async (newTaskData) => {
     try {
-      const response = await axios.post(API_URL, newTaskData);
-      setTasks([...tasks, response.data]);
+      const data = await api.addTask(newTaskData);
+      setTasks([...tasks, data]);
+      if (api.isDemoMode()) {
+        setError("Running in Demo Mode: Your changes will be saved locally in this browser.");
+      }
     } catch (error) {
       console.error("Error adding task:", error);
     }
@@ -61,7 +68,7 @@ function App() {
 
   const toggleComplete = async (id, completed) => {
     try {
-      await axios.patch(`${API_URL}/${id}`, { completed: !completed });
+      await api.updateTask(id, { completed: !completed });
 
       // Celebration effect when completing a task
       if (!completed) {
@@ -85,7 +92,7 @@ function App() {
 
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await api.deleteTask(id);
       setTasks(tasks.filter((task) => task.id !== id));
     } catch (error) {
       console.error("Error deleting task:", error);
@@ -95,8 +102,8 @@ function App() {
 
   const updateTask = async (id, updatedTaskData) => {
     try {
-      const response = await axios.put(`${API_URL}/${id}`, updatedTaskData);
-      setTasks(tasks.map((task) => (task.id === id ? response.data : task)));
+      const data = await api.replaceTask(id, updatedTaskData);
+      setTasks(tasks.map((task) => (task.id === id ? data : task)));
       closeEditModal();
     } catch (error) {
       console.error("Error updating task:", error);
@@ -178,24 +185,18 @@ function App() {
               <div className="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mb-4"></div>
               <p className="text-slate-500 font-medium">Loading your tasks...</p>
             </div>
-          ) : error ? (
-            <div className="card-premium border-rose-200 dark:border-rose-900/30 bg-rose-50/50 dark:bg-rose-900/10 p-8 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 mb-4">
-                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">Connection Error</h3>
-              <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-md mx-auto">{error}</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="btn-primary px-8 py-3"
-              >
-                Retry Connection
-              </button>
-            </div>
           ) : (
             <>
+              {error && (
+                <div className="mb-6 p-4 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800/40 flex items-center gap-3 animate-slide-in">
+                  <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <p className="text-sm font-medium text-indigo-800 dark:text-indigo-300">{error}</p>
+                </div>
+              )}
               <Dashboard tasks={tasks} />
 
               <div className="card-premium">

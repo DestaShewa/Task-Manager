@@ -1,99 +1,67 @@
-Task Manager Pro – A Modern React & Tailwind Application
+# 🚀 TaskMaster Pro: Premium Task Management Solution
 
+**A high-performance, glassmorphic task management application built for maximum productivity.** 
 
-A quick demo GIF showing adding a task, dragging & dropping, and switching dark mode.
+---
 
-🚀 Live Demo & Project Overview
+## 🏆 Project Overview
+TaskMaster Pro is more than just a to-do list; it's a showcase of sophisticated UI/UX and modern frontend engineering. Designed for the 2026 Developer Competition, it combines sleek aesthetics with powerful functionality to provide a seamless user experience.
 
-Live Demo: https://your-live-demo-url.vercel.app/
+### ✨ Key Features
+- **📊 Real-time Analytics**: Visual productivity tracking using Recharts.
+- **🖱️ Intuitive Drag & Drop**: Seamless task reordering with @hello-pangea/dnd.
+- **🔔 Smart Notifications**: Time-sensitive desktop alerts for upcoming deadlines.
+- **🌗 Universal Theme Support**: Beautifully optimized for both Light and Dark modes.
+- **📱 Ultra-Responsive**: Designed using a fluid "card-premium" system for Desktop, Tablet, and Mobile.
+- **🎉 Achievement Celebration**: Performance-optimized confetti effects on task completion.
 
-Task Manager Pro is a feature-rich task management app built with React, Tailwind CSS, and a REST API. It demonstrates core professional web development skills:
+---
 
-State management
+## 🛠️ Tech Stack
+| Category | Technology |
+| :--- | :--- |
+| **Frontend** | React 19, Vite |
+| **Styling** | Tailwind CSS 3 (Custom Glassmorphism) |
+| **Animations** | Framer Motion |
+| **Data Viz** | Recharts |
+| **Icons** | Lucide React, HeroIcons |
+| **Backend** | JSON Server (Mock API) |
 
-REST API integration
+---
 
-Responsive UI/UX
+## 💼 Client Focus: Why This Matters
+As a **Full-Stack Developer**, I built this project to demonstrate:
+1. **Clean Code Architecture**: Modular components and efficient state management.
+2. **Performance Optimization**: 60fps animations and lightweight dependencies.
+3. **Advanced UI/UX**: Professional-grade design using glassmorphism and motion.
+4. **Attention to Detail**: From loading spinners to celebratory confetti and time-based greetings.
 
-Advanced productivity features
+---
 
-This project was built to showcase production-ready skills for freelance and full-time web development roles.
+## 🚀 Quick Start
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/DestaShewa/Task-Manager.git
+   ```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+3. **Start the server**
+   ```bash
+   npm run server
+   ```
+4. **Run the app**
+   ```bash
+   npm run dev
+   ```
 
+---
 
-| Feature                    | Status | Description                                                                |
-| -------------------------- | ------ | -------------------------------------------------------------------------- |
-| Full CRUD Operations       | ✅      | Create, Read, Update, and Delete tasks with a clean UI.                    |
-| Advanced Filtering/Sorting | ✅      | Filter tasks by status (All, Active, Completed) and sort by date/priority. |
-| Drag & Drop Reordering     | ✅      | Rearrange tasks easily using `react-beautiful-dnd`.                        |
-| Priority Levels            | ✅      | Assign Low, Medium, or High priorities with color-coded tags.              |
-| Due Dates & Categories     | ✅      | Organize tasks by deadlines and categories (Work, Personal, etc.).         |
-| Productivity Tracker       | ✅      | Visual progress bar showing completion percentage.                         |
-| Responsive Design          | ✅      | Works on all devices — mobile to desktop.                                  |
-| Dark/Light Mode            | ✅      | User-selectable theme with saved preference in localStorage.               |
-| Confirmation Dialogs       | ✅      | Prevents accidental deletes and edits.                                     |
-| Offline Support (PWA)      | ✅      | Installable app with offline support.                                      |
-| REST API Backend           | ✅      | Data persisted via `json-server` (mock RESTful backend).                   |
+## 📬 Contact & Hire
+**Desta Shewa**  
+*Full-Stack Developer | Available for New Projects*  
+📧 [hire@desta.dev](mailto:hire@desta.dev) | 🔗 [Portfolio](#) | 💼 [Upwork Profile](#)
 
-
-| Area              | Technology / Skill                               |
-| ----------------- | ------------------------------------------------ |
-| Core              | React 18 (Vite), JavaScript (ES6+)               |
-| State Management  | React Hooks (`useState`, `useEffect`, `useMemo`) |
-| Styling           | Tailwind CSS (with Dark Mode)                    |
-| API Communication | Axios + RESTful API                              |
-| Drag & Drop       | `react-beautiful-dnd`                            |
-| Offline Support   | Progressive Web App (PWA) via `vite-plugin-pwa`  |
-| Backend (Mock)    | `json-server`                                    |
-| Workflow Tools    | Vite, npm, ESLint, Git & GitHub                  |
-
-
-⚡ Getting Started
-📌 Prerequisites
-
-Node.js (v16+)
-
-npm (comes with Node.js)
-
-📌 Installation & Setup
-
-Clone the repository:
-git clone https://github.com/your-username/task-manager-pro.git
-cd task-manager-pro
-
-Install dependencies:
-npm install
-
-Run backend (JSON Server):
-npm run server
-# API available at http://localhost:5000
-
-Run frontend (React):
-npm run dev
-# App opens at http://localhost:5173
-
-📸 Screenshots
-Task Dashboard
-
-Dark Mode
-
-📞 Contact
-
-👤 Your Name
-
-🌐 Portfolio: https://your-portfolio-link.com
-
-💼 LinkedIn: https://linkedin.com/in/your-profile
-
-📧 Email: your.email@example.com
-
-📂 Project Repo: https://github.com/your-username/task-manager-pro 
-
-✅ How to Use This README
-
-Create a GIF demo → record your app with ScreenToGif or GIPHY Capture.
-
-Upload the GIF → host on Imgur, paste link in the showcase section.
-
-Deploy app → use Vercel (frontend) + Render (backend).
-
-Update placeholders → replace your-username, your-live-demo-url, etc. with your actual info.
+--
+*Made with ❤️ for the 2026 Developer Competition*
