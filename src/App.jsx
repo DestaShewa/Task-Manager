@@ -40,9 +40,6 @@ function App() {
       try {
         const data = await api.getTasks();
         setTasks(data);
-        if (api.isDemoMode()) {
-          setError("Running in Demo Mode: Your changes will be saved locally in this browser.");
-        }
       } catch (error) {
         console.error("Error fetching tasks:", error);
         setError("Failed to fetch tasks. Please ensure the backend server is running.");
@@ -58,9 +55,6 @@ function App() {
     try {
       const data = await api.addTask(newTaskData);
       setTasks([...tasks, data]);
-      if (api.isDemoMode()) {
-        setError("Running in Demo Mode: Your changes will be saved locally in this browser.");
-      }
     } catch (error) {
       console.error("Error adding task:", error);
     }
@@ -187,16 +181,6 @@ function App() {
             </div>
           ) : (
             <>
-              {error && (
-                <div className="mb-6 p-4 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800/40 flex items-center gap-3 animate-slide-in">
-                  <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <p className="text-sm font-medium text-indigo-800 dark:text-indigo-300">{error}</p>
-                </div>
-              )}
               <Dashboard tasks={tasks} />
 
               <div className="card-premium">
