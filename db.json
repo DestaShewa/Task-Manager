@@ -205,6 +205,13 @@
       "password": "1234",
       "role": "user",
       "id": "1773417434457"
+    },
+    {
+      "name": "Desta",
+      "email": "d67@gmail.com",
+      "password": "1234",
+      "role": "user",
+      "id": "1773421353372"
     }
   ],
   "groups": [

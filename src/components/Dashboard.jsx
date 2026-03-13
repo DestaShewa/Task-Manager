@@ -119,10 +119,10 @@ const Dashboard = ({ tasks }) => {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="card-premium lg:col-span-2 min-h-[300px]"
+                    className="card-premium lg:col-span-2"
                 >
                     <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-6">Task Distribution by Category</h3>
-                    <div className="h-[200px] w-full">
+                    <div className="h-[250px] min-h-[250px] w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={chartData}>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />

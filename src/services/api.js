@@ -14,6 +14,15 @@ const saveLocalTasks = (tasks) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 };
 
+const getLocalUsers = () => {
+    const users = localStorage.getItem("task_manager_users");
+    return users ? JSON.parse(users) : [];
+};
+
+const saveLocalUsers = (users) => {
+    localStorage.setItem("task_manager_users", JSON.stringify(users));
+};
+
 // State to track if we are in "Demo Mode" (using localStorage)
 let isDemoMode = false;
 
@@ -21,10 +30,12 @@ const api = {
     getUsers: async () => {
         try {
             const response = await axios.get(`${API_URL}/users`);
+            isDemoMode = false;
             return response.data;
         } catch (error) {
-            console.warn("API Error fetching users, falling back to empty list");
-            return [];
+            console.warn("API Error fetching users, falling back to LocalStorage");
+            isDemoMode = true;
+            return getLocalUsers();
         }
     },
 
@@ -33,8 +44,13 @@ const api = {
             const response = await axios.post(`${API_URL}/users`, userData);
             return response.data;
         } catch (error) {
-            console.error("API Error registering user:", error);
-            throw error;
+            console.warn("API Registration failed, saving to LocalStorage");
+            isDemoMode = true;
+            const users = getLocalUsers();
+            const newUser = { ...userData, id: Date.now().toString() };
+            users.push(newUser);
+            saveLocalUsers(users);
+            return newUser;
         }
     },
 
@@ -43,8 +59,11 @@ const api = {
             const response = await axios.patch(`${API_URL}/users/${id}`, updates);
             return response.data;
         } catch (error) {
-            console.error("API Error updating user:", error);
-            throw error;
+            isDemoMode = true;
+            const users = getLocalUsers();
+            const updatedUsers = users.map(u => String(u.id) === String(id) ? { ...u, ...updates } : u);
+            saveLocalUsers(updatedUsers);
+            return updatedUsers.find(u => String(u.id) === String(id));
         }
     },
 
