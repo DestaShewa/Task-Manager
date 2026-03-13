@@ -122,8 +122,8 @@ const Dashboard = ({ tasks }) => {
                     className="card-premium lg:col-span-2"
                 >
                     <h3 className="text-lg font-semibold text-slate-800 dark:text-white mb-6">Task Distribution by Category</h3>
-                    <div className="h-[250px] min-h-[250px] w-full">
-                        <ResponsiveContainer width="100%" height="100%">
+                    <div className="w-full">
+                        <ResponsiveContainer width="100%" aspect={2.5}>
                             <BarChart data={chartData}>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                                 <XAxis
