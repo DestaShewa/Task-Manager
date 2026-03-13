@@ -1,6 +1,10 @@
 {
     "rewrites": [
         {
+            "source": "/(assets|pwa-|manifest.webmanifest|vite.svg)(.*)",
+            "destination": "/$1$2"
+        },
+        {
             "source": "/api/(.*)",
             "destination": "/api"
         },

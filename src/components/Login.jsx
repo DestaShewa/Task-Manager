@@ -105,12 +105,12 @@ const Login = () => {
                         <p className="text-xs text-slate-400 mb-3 font-bold uppercase tracking-wider">Demo Accounts</p>
                         <div className="space-y-2">
                             <div className="flex justify-between items-center text-xs">
-                                <span className="text-slate-600 dark:text-slate-300 font-medium">admin@example.com</span>
-                                <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-full font-bold">Admin</span>
+                                <span className="text-slate-600 dark:text-slate-300 font-medium">admin@pro.com</span>
+                                <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-full font-bold text-[10px]">Admin (pass: admin)</span>
                             </div>
                             <div className="flex justify-between items-center text-xs">
                                 <span className="text-slate-600 dark:text-slate-300 font-medium">friend1@example.com</span>
-                                <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full font-bold">User</span>
+                                <span className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full font-bold text-[10px]">User (pass: 1234)</span>
                             </div>
                         </div>
                     </div>

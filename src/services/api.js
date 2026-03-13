@@ -31,7 +31,7 @@ const api = {
         try {
             const response = await axios.get(`${API_URL}/users`);
             isDemoMode = false;
-            return response.data;
+            return Array.isArray(response.data) ? response.data : [];
         } catch (error) {
             console.warn("API Error fetching users, falling back to LocalStorage");
             isDemoMode = true;
@@ -82,7 +82,7 @@ const api = {
             const url = userId ? `${API_URL}/tasks?userId=${userId}` : `${API_URL}/tasks`;
             const response = await axios.get(url);
             isDemoMode = false;
-            return response.data;
+            return Array.isArray(response.data) ? response.data : [];
         } catch (error) {
             console.warn("API Error, falling back to localStorage");
             isDemoMode = true;
@@ -95,11 +95,12 @@ const api = {
         try {
             // First get all users in the group
             const usersResponse = await axios.get(`${API_URL}/users?groupId=${groupId}`);
-            const userIds = usersResponse.data.map(u => u.id);
+            const userIds = Array.isArray(usersResponse.data) ? usersResponse.data.map(u => u.id) : [];
 
             // Fetch tasks for all these users (simplified for json-server)
             const tasksResponse = await axios.get(`${API_URL}/tasks`);
-            return tasksResponse.data.filter(t => userIds.includes(t.userId));
+            const tasks = Array.isArray(tasksResponse.data) ? tasksResponse.data : [];
+            return tasks.filter(t => userIds.includes(t.userId));
         } catch (error) {
             console.error("Error fetching group tasks:", error);
             return [];

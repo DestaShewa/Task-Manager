@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
-import { LogOut, LogIn, UserPlus } from "lucide-react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { LogOut, LogIn, UserPlus, ShieldCheck, Users as UsersIcon, LayoutDashboard } from "lucide-react";
 
 function Header({ children }) {
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin } = useAuth();
   const navigate = useNavigate();
   const greeting = useMemo(() => {
     const hour = new Date().getHours();
@@ -38,9 +38,37 @@ function Header({ children }) {
 
       <div className="mt-6 sm:mt-0 z-10 flex items-center gap-4 relative">
         {user ? (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
+            <nav className="hidden lg:flex items-center gap-2 bg-slate-100 dark:bg-slate-900/50 p-1 rounded-2xl border border-slate-200 dark:border-slate-800 mr-4">
+              <Link
+                to="/dashboard"
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${location.pathname === '/dashboard' ? 'bg-white dark:bg-slate-800 shadow-md text-primary-600' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
+              >
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                Tasks
+              </Link>
+              <Link
+                to="/friends"
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${location.pathname === '/friends' ? 'bg-white dark:bg-slate-800 shadow-md text-primary-600' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'}`}
+              >
+                <UsersIcon className="w-3.5 h-3.5" />
+                Friends
+              </Link>
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${location.pathname === '/admin' ? 'bg-white dark:bg-slate-800 shadow-md text-rose-600' : 'text-slate-500 hover:text-rose-600'}`}
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  Admin
+                </Link>
+              )}
+            </nav>
+
             <div className="hidden md:flex flex-col items-end mr-2">
-              <span className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none mb-1">Authenticated</span>
+              <span className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none mb-1">
+                {isAdmin ? 'System Admin' : 'Active Member'}
+              </span>
               <span className="text-sm font-bold text-slate-700 dark:text-slate-300">{user.name}</span>
             </div>
             <button
@@ -48,10 +76,10 @@ function Header({ children }) {
                 logout();
                 navigate("/auth");
               }}
-              className="group flex items-center gap-2 px-6 py-3 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 font-black rounded-2xl border border-rose-100 dark:border-rose-900/30 hover:bg-rose-600 hover:text-white transition-all duration-300 active:scale-95 shadow-lg shadow-rose-500/10"
+              className="group flex items-center gap-2 px-5 py-2.5 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 font-black rounded-2xl border border-rose-100 dark:border-rose-900/30 hover:bg-rose-600 hover:text-white transition-all duration-300 active:scale-95 shadow-lg shadow-rose-500/10"
             >
-              <LogOut className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              <span>Logout</span>
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
         ) : (

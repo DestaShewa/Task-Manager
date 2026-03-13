@@ -187,7 +187,7 @@ function AppContent() {
   // --- Filtering and Sorting ---
   const filteredAndSortedTasks = useMemo(() => {
     const priorityValues = { Low: 1, Medium: 2, High: 3 };
-    let result = tasks
+    let result = (Array.isArray(tasks) ? tasks : [])
       .filter((task) => {
         if (currentFilter === "Active") return !task.completed;
         if (currentFilter === "Completed") return task.completed;
