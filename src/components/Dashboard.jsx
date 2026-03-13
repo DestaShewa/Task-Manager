@@ -99,16 +99,18 @@ const Dashboard = ({ tasks }) => {
                         </div>
                         <span className="text-3xl font-bold text-primary-600">{completionRate}%</span>
                     </div>
-                    <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-4 overflow-hidden mb-4">
+                    <div className="w-full bg-slate-200/50 dark:bg-slate-800/50 rounded-full h-5 overflow-hidden mb-4 border border-slate-100 dark:border-slate-800 p-1">
                         <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${completionRate}%` }}
-                            transition={{ duration: 1, ease: "easeOut" }}
-                            className="bg-primary-600 h-full rounded-full"
-                        />
+                            transition={{ duration: 1.5, ease: "circOut" }}
+                            className="bg-primary-600 h-full rounded-full relative"
+                        >
+                            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                        </motion.div>
                     </div>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 italic text-center">
-                        Keep going! You've got this.
+                    <p className="text-[10px] text-slate-400 dark:text-slate-500 font-black uppercase tracking-widest text-center">
+                        Sync Status: Optimized
                     </p>
                 </motion.div>
 

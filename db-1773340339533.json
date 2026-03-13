@@ -1,0 +1,112 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Finalize project proposal",
+      "completed": true,
+      "priority": "High",
+      "dueDate": "2025-10-25",
+      "category": "Work",
+      "userId": "1"
+    },
+    {
+      "id": "3",
+      "title": "Prepare for the React exam",
+      "completed": false,
+      "priority": "High",
+      "dueDate": "2025-11-10",
+      "category": "Study",
+      "userId": "1"
+    },
+    {
+      "title": "The work",
+      "priority": "Medium",
+      "dueDate": "2025-09-10",
+      "category": "Personal",
+      "completed": false,
+      "id": "ZrVeGhX",
+      "subtasks": [],
+      "userId": "2"
+    },
+    {
+      "title": "build",
+      "priority": "Medium",
+      "dueDate": "2026-03-07T10:10",
+      "category": "Personal",
+      "completed": false,
+      "subtasks": [],
+      "id": "zgkOha1",
+      "userId": "2"
+    },
+    {
+      "title": "sport today push up",
+      "priority": "Medium",
+      "dueDate": "2026-03-08T00:07",
+      "category": "Health",
+      "completed": false,
+      "subtasks": [],
+      "id": "mtJftU5",
+      "userId": "3"
+    },
+    {
+      "title": "Read",
+      "priority": "Medium",
+      "dueDate": "2026-03-07T00:10",
+      "category": "Study",
+      "completed": false,
+      "subtasks": [],
+      "id": "o9gvwZk",
+      "userId": "3"
+    },
+    {
+      "title": "Check",
+      "priority": "High",
+      "dueDate": "2026-03-07T04:09",
+      "category": "Personal",
+      "completed": false,
+      "subtasks": [],
+      "id": "KdRgM98",
+      "userId": "1"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin User",
+      "email": "admin@example.com",
+      "role": "admin",
+      "groupId": "1"
+    },
+    {
+      "id": "2",
+      "name": "Friend One",
+      "email": "friend1@example.com",
+      "role": "user",
+      "groupId": "1"
+    },
+    {
+      "id": "3",
+      "name": "Friend Two",
+      "email": "friend2@example.com",
+      "role": "user",
+      "groupId": "1"
+    },
+    {
+      "id": "4",
+      "name": "Outside User",
+      "email": "other@example.com",
+      "role": "user",
+      "groupId": "2"
+    }
+  ],
+  "groups": [
+    {
+      "id": "1",
+      "name": "Design Team"
+    },
+    {
+      "id": "2",
+      "name": "Marketing Team"
+    }
+  ]
+}

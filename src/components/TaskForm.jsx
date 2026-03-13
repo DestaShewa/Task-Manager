@@ -135,7 +135,7 @@ function TaskForm({ onAddTask }) {
                 <button
                   type="button"
                   onClick={() => removeSubtask(sub.id)}
-                  className="p-1 text-slate-400 hover:text-accent opacity-0 group-hover:opacity-100 transition-all"
+                  className="p-1 text-slate-400 hover:text-accent sm:opacity-0 sm:group-hover:opacity-100 transition-all"
                 >
                   <TrashIcon className="w-4 h-4" />
                 </button>

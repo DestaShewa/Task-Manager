@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import api from "./services/api";
 
 // Import all our components
@@ -14,46 +16,62 @@ import ThemeToggle from "./components/ThemeToggle";
 import ProgressTracker from "./components/ProgressTracker";
 import Dashboard from "./components/Dashboard";
 import Footer from "./components/Footer";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import UnifiedAuth from "./components/UnifiedAuth";
+import AdminDashboard from "./components/AdminDashboard";
+import FriendDashboard from "./components/FriendDashboard";
 import confetti from "canvas-confetti";
 import NotificationManager from "./components/NotificationManager";
 
-// The URL for our simplified backend
-// API service handles URLs and fallbacks
-// const API_URL = "http://localhost:5000/tasks";
-
-function App() {
+function AppContent() {
+  const { user, loading: authLoading } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [currentFilter, setCurrentFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("default");
+  const [viewMode, setViewMode] = useState("list"); // 'list' or 'grouped'
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [confirmation, setConfirmation] = useState({ isOpen: false });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch tasks from API on component mount
+  // Fetch tasks from API on component mount or when user changes
+  const fetchTasks = async (silent = false) => {
+    if (!user) {
+      setTasks([]);
+      setIsLoading(false);
+      return;
+    }
+    if (!silent) setIsLoading(true);
+    setError(null);
+    try {
+      const data = await api.getTasks(user.id);
+      setTasks(data);
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      if (!silent) setError("Failed to fetch tasks. Please ensure the backend server is running.");
+    } finally {
+      if (!silent) setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchTasks = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const data = await api.getTasks();
-        setTasks(data);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-        setError("Failed to fetch tasks. Please ensure the backend server is running.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchTasks();
-  }, []);
+
+    // Multi-device synchronization polling
+    const pollInterval = setInterval(() => {
+      fetchTasks(true);
+    }, 30000); // Poll every 30 seconds
+
+    return () => clearInterval(pollInterval);
+  }, [user]);
 
   // --- API Functions ---
   const addTask = async (newTaskData) => {
     try {
-      const data = await api.addTask(newTaskData);
+      const data = await api.addTask({ ...newTaskData, userId: user.id });
       setTasks([...tasks, data]);
     } catch (error) {
       console.error("Error adding task:", error);
@@ -103,6 +121,28 @@ function App() {
       console.error("Error updating task:", error);
     }
     setConfirmation({ isOpen: false });
+  };
+
+  const handleLike = async (id) => {
+    try {
+      const updatedTask = await api.likeTask(id, user.id);
+      setTasks(tasks.map(t => t.id === id ? updatedTask : t));
+    } catch (error) {
+      console.error("Error liking task:", error);
+    }
+  };
+
+  const handleAddComment = async (id, currentComments, commentText) => {
+    try {
+      const updatedTask = await api.addComment(id, currentComments, {
+        text: commentText,
+        author: user.name,
+        authorId: user.id
+      });
+      setTasks(tasks.map(t => t.id === id ? updatedTask : t));
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
   };
 
   // --- Confirmation Handlers ---
@@ -166,50 +206,90 @@ function App() {
     return result;
   }, [tasks, currentFilter, searchTerm, sortBy]);
 
+  if (authLoading) return <div className="h-screen flex items-center justify-center">Loading authentication...</div>;
+
   return (
-    <div className="min-h-screen font-sans pb-12">
-      <div className="container mx-auto max-w-5xl p-4 sm:p-6 animate-fade-in">
+    <div className="min-h-screen font-sans pb-12 relative overflow-hidden">
+      <div className="bg-mesh-gradient">
+        <div className="mesh-ball mesh-ball-1 opacity-[0.07] dark:opacity-[0.03]"></div>
+        <div className="mesh-ball mesh-ball-2 opacity-[0.07] dark:opacity-[0.03]"></div>
+      </div>
+
+      <div className="container mx-auto max-w-5xl p-4 sm:p-6 animate-fade-in relative z-10">
         <Header>
           <ThemeToggle />
         </Header>
 
         <main className="mt-8">
-          {isLoading ? (
-            <div className="flex flex-col items-center justify-center py-20 animate-pulse">
-              <div className="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mb-4"></div>
-              <p className="text-slate-500 font-medium">Loading your tasks...</p>
-            </div>
-          ) : (
-            <>
-              <Dashboard tasks={tasks} />
-
-              <div className="card-premium">
-                <TaskForm onAddTask={addTask} />
-                <div className="mt-8 border-t border-slate-200 dark:border-slate-700 pt-8">
-                  <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
-                    <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                    <div className="flex items-center gap-4">
-                      <TaskFilter
-                        currentFilter={currentFilter}
-                        setCurrentFilter={setCurrentFilter}
-                      />
-                      <SortControl setSortBy={setSortBy} />
+          <Routes>
+            <Route path="/login" element={!user ? <UnifiedAuth /> : (user.role === 'admin' ? <Navigate to="/admin" /> : <Navigate to="/dashboard" />)} />
+            <Route path="/register" element={!user ? <UnifiedAuth /> : (user.role === 'admin' ? <Navigate to="/admin" /> : <Navigate to="/dashboard" />)} />
+            <Route path="/auth" element={!user ? <UnifiedAuth /> : (user.role === 'admin' ? <Navigate to="/admin" /> : <Navigate to="/dashboard" />)} />
+            <Route path="/dashboard" element={user ? (
+              <>
+                <Dashboard tasks={tasks} />
+                <div className="card-premium">
+                  <TaskForm onAddTask={addTask} />
+                  <div className="mt-8 border-t border-slate-200 dark:border-slate-700 pt-8">
+                    <div className="flex flex-col sm:flex-row gap-6 justify-between items-center bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                      <div className="w-full sm:w-auto">
+                        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                      </div>
+                      <div className="flex flex-wrap items-center justify-center sm:justify-end gap-6 w-full sm:w-auto">
+                        <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+                          <button
+                            onClick={() => setViewMode('list')}
+                            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${viewMode === 'list' ? 'bg-white dark:bg-slate-700 shadow-sm text-primary-600' : 'text-slate-500 hover:text-slate-700'}`}
+                          >
+                            List
+                          </button>
+                          <button
+                            onClick={() => setViewMode('grouped')}
+                            className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${viewMode === 'grouped' ? 'bg-white dark:bg-slate-700 shadow-sm text-primary-600' : 'text-slate-500 hover:text-slate-700'}`}
+                          >
+                            Collected
+                          </button>
+                        </div>
+                        <TaskFilter
+                          currentFilter={currentFilter}
+                          setCurrentFilter={setCurrentFilter}
+                        />
+                        <SortControl setSortBy={setSortBy} />
+                      </div>
                     </div>
                   </div>
+                  <div className="mt-8">
+                    <TaskList
+                      tasks={filteredAndSortedTasks}
+                      viewMode={viewMode}
+                      onToggleComplete={toggleComplete}
+                      onDeleteTask={handleDeleteRequest}
+                      onEditTask={openEditModal}
+                      onLike={handleLike}
+                      onAddComment={handleAddComment}
+                      onDragEnd={handleOnDragEnd}
+                    />
+                  </div>
                 </div>
-
-                <div className="mt-8">
-                  <TaskList
-                    tasks={filteredAndSortedTasks}
-                    onToggleComplete={toggleComplete}
-                    onDeleteTask={handleDeleteRequest}
-                    onEditTask={openEditModal}
-                    onDragEnd={handleOnDragEnd}
-                  />
-                </div>
-              </div>
-            </>
-          )}
+              </>
+            ) : <Navigate to="/auth" />} />
+            <Route path="/friends" element={user ? (
+              <FriendDashboard
+                onLike={handleLike}
+                onAddComment={handleAddComment}
+                onToggleComplete={toggleComplete}
+              />
+            ) : <Navigate to="/auth" />} />
+            <Route path="/admin" element={user?.role === 'admin' ? (
+              <AdminDashboard
+                onLike={handleLike}
+                onAddComment={handleAddComment}
+                onToggleComplete={toggleComplete}
+                onDeleteTask={deleteTask}
+              />
+            ) : <Navigate to="/dashboard" />} />
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+          </Routes>
         </main>
       </div>
 
@@ -230,6 +310,17 @@ function App() {
 
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppContent />
+        <NotificationManager />
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 

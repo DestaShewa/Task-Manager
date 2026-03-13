@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/tasks";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const STORAGE_KEY = "task_manager_tasks";
 
 // Helper to get tasks from localStorage
@@ -18,29 +18,85 @@ const saveLocalTasks = (tasks) => {
 let isDemoMode = false;
 
 const api = {
-    getTasks: async () => {
+    getUsers: async () => {
         try {
-            const response = await axios.get(API_URL);
+            const response = await axios.get(`${API_URL}/users`);
+            return response.data;
+        } catch (error) {
+            console.warn("API Error fetching users, falling back to empty list");
+            return [];
+        }
+    },
+
+    registerUser: async (userData) => {
+        try {
+            const response = await axios.post(`${API_URL}/users`, userData);
+            return response.data;
+        } catch (error) {
+            console.error("API Error registering user:", error);
+            throw error;
+        }
+    },
+
+    updateUser: async (id, updates) => {
+        try {
+            const response = await axios.patch(`${API_URL}/users/${id}`, updates);
+            return response.data;
+        } catch (error) {
+            console.error("API Error updating user:", error);
+            throw error;
+        }
+    },
+
+    deleteUser: async (id) => {
+        try {
+            await axios.delete(`${API_URL}/users/${id}`);
+            return true;
+        } catch (error) {
+            console.error("API Error deleting user:", error);
+            throw error;
+        }
+    },
+
+    getTasks: async (userId) => {
+        try {
+            const url = userId ? `${API_URL}/tasks?userId=${userId}` : `${API_URL}/tasks`;
+            const response = await axios.get(url);
             isDemoMode = false;
-            saveLocalTasks(response.data);
             return response.data;
         } catch (error) {
             console.warn("API Error, falling back to localStorage");
             isDemoMode = true;
-            return getLocalTasks();
+            const local = getLocalTasks();
+            return userId ? local.filter(t => t.userId === userId) : local;
+        }
+    },
+
+    getTasksByGroup: async (groupId) => {
+        try {
+            // First get all users in the group
+            const usersResponse = await axios.get(`${API_URL}/users?groupId=${groupId}`);
+            const userIds = usersResponse.data.map(u => u.id);
+
+            // Fetch tasks for all these users (simplified for json-server)
+            const tasksResponse = await axios.get(`${API_URL}/tasks`);
+            return tasksResponse.data.filter(t => userIds.includes(t.userId));
+        } catch (error) {
+            console.error("Error fetching group tasks:", error);
+            return [];
         }
     },
 
     addTask: async (task) => {
         if (isDemoMode) {
             const tasks = getLocalTasks();
-            const newTask = { ...task, id: Date.now() };
+            const newTask = { ...task, id: Date.now().toString() };
             tasks.push(newTask);
             saveLocalTasks(tasks);
             return newTask;
         }
         try {
-            const response = await axios.post(API_URL, task);
+            const response = await axios.post(`${API_URL}/tasks`, task);
             return response.data;
         } catch (error) {
             console.warn("Post failed, switching to Demo Mode");
@@ -52,12 +108,12 @@ const api = {
     updateTask: async (id, updates) => {
         if (isDemoMode) {
             const tasks = getLocalTasks();
-            const updatedTasks = tasks.map((t) => (t.id === id ? { ...t, ...updates } : t));
+            const updatedTasks = tasks.map((t) => (String(t.id) === String(id) ? { ...t, ...updates } : t));
             saveLocalTasks(updatedTasks);
-            return updatedTasks.find((t) => t.id === id);
+            return updatedTasks.find((t) => String(t.id) === String(id));
         }
         try {
-            const response = await axios.patch(`${API_URL}/${id}`, updates);
+            const response = await axios.patch(`${API_URL}/tasks/${id}`, updates);
             return response.data;
         } catch (error) {
             isDemoMode = true;
@@ -69,7 +125,6 @@ const api = {
         if (isDemoMode) {
             const tasks = getLocalTasks();
             const updatedTasks = tasks.map((t) => {
-                // Handle potential ID type mismatch (string vs number)
                 if (String(t.id) === String(id)) {
                     return { ...task, id: t.id };
                 }
@@ -79,7 +134,7 @@ const api = {
             return { ...task, id };
         }
         try {
-            const response = await axios.put(`${API_URL}/${id}`, task);
+            const response = await axios.put(`${API_URL}/tasks/${id}`, task);
             return response.data;
         } catch (error) {
             isDemoMode = true;
@@ -95,7 +150,7 @@ const api = {
             return true;
         }
         try {
-            await axios.delete(`${API_URL}/${id}`);
+            await axios.delete(`${API_URL}/tasks/${id}`);
             return true;
         } catch (error) {
             isDemoMode = true;
@@ -103,7 +158,35 @@ const api = {
         }
     },
 
-    isDemoMode: () => isDemoMode
+    isDemoMode: () => isDemoMode,
+
+    likeTask: async (id, userId) => {
+        const tasks = isDemoMode ? getLocalTasks() : (await axios.get(`${API_URL}/tasks/${id}`)).data;
+        const task = isDemoMode ? tasks.find(t => String(t.id) === String(id)) : tasks;
+
+        let likedBy = task.likedBy || [];
+        if (likedBy.includes(userId)) {
+            likedBy = likedBy.filter(uid => uid !== userId);
+        } else {
+            likedBy.push(userId);
+        }
+
+        return api.updateTask(id, {
+            likedBy,
+            likes: likedBy.length
+        });
+    },
+
+    addComment: async (id, currentComments = [], comment) => {
+        const newComments = [...(currentComments || []), {
+            id: Date.now().toString(),
+            text: comment.text,
+            author: comment.author,
+            authorId: comment.authorId,
+            timestamp: new Date().toISOString()
+        }];
+        return api.updateTask(id, { comments: newComments });
+    }
 };
 
 export default api;

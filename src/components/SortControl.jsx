@@ -2,7 +2,7 @@ import React from "react";
 
 function SortControl({ setSortBy }) {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center flex-wrap gap-2 text-sm sm:text-base">
       <label htmlFor="sort" className="text-gray-600 mr-2 font-medium">
         Sort by:
       </label>
