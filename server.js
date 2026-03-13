@@ -7,13 +7,16 @@ const server = jsonServer.create();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const router = jsonServer.router(path.join(__dirname, 'db.json'));
-const middlewares = jsonServer.defaults();
+const middlewares = jsonServer.defaults({
+    noCors: true // We will handle CORS ourselves
+});
 
 // Enable CORS for your Vercel deployment
 server.use(cors({
-    origin: '*', // Allow all origins for the portfolio demo
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
+    origin: '*', // Allow all for demo, or you can specify your vercel domain
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
     optionsSuccessStatus: 204
 }));
 
