@@ -222,6 +222,13 @@
       "password": "1234",
       "role": "user",
       "id": "1773421353372"
+    },
+    {
+      "name": "ela",
+      "email": "ela@gmail.com",
+      "password": "1234",
+      "role": "user",
+      "id": "1773675474732"
     }
   ],
   "groups": [

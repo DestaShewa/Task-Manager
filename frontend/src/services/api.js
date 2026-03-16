@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5000');
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const STORAGE_KEY = "task_manager_tasks";
 
 // Helper to get tasks from localStorage
