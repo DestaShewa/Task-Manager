@@ -1,67 +1,127 @@
-# 🚀 TaskMaster Pro: Premium Task Management Solution
+<div align="center">
 
-**A high-performance, glassmorphic task management application built for maximum productivity.** 
+# ✅ TaskMaster Pro
+
+### A premium, full-stack Task Management application with real-time analytics, drag & drop, multi-user support, and an admin dashboard.
+
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_App-4f46e5?style=for-the-badge)](https://task-manager-demo.vercel.app)
+[![Backend API](https://img.shields.io/badge/⚙️_Backend_API-Render-22c55e?style=for-the-badge)](https://task-manager-api.onrender.com)
+[![React](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Express](https://img.shields.io/badge/Express_4-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com)
+
+</div>
 
 ---
 
-## 🏆 Project Overview
-TaskMaster Pro is more than just a to-do list; it's a showcase of sophisticated UI/UX and modern frontend engineering. Designed for the 2026 Developer Competition, it combines sleek aesthetics with powerful functionality to provide a seamless user experience.
+## 🖼️ Screenshots
 
-### ✨ Key Features
-- **📊 Real-time Analytics**: Visual productivity tracking using Recharts.
-- **🖱️ Intuitive Drag & Drop**: Seamless task reordering with @hello-pangea/dnd.
-- **🔔 Smart Notifications**: Time-sensitive desktop alerts for upcoming deadlines.
-- **🌗 Universal Theme Support**: Beautifully optimized for both Light and Dark modes.
-- **📱 Ultra-Responsive**: Designed using a fluid "card-premium" system for Desktop, Tablet, and Mobile.
-- **🎉 Achievement Celebration**: Performance-optimized confetti effects on task completion.
+> _📸 Add your screenshots here — Dashboard, Admin Panel, Mobile view_
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---|---|
+| 🔐 **Auth System** | Register & login with JWT-secured sessions |
+| 📊 **Analytics Dashboard** | Real-time productivity charts with Recharts |
+| 🖱️ **Drag & Drop** | Smooth task reordering via `@hello-pangea/dnd` |
+| 👑 **Admin Panel** | Full CRUD for managing all users and tasks |
+| � **Multi-User** | Each user has their own private task space |
+| �🔔 **Smart Notifications** | Desktop alerts for approaching deadlines |
+| 🌗 **Dark / Light Mode** | Fully themed glassmorphic UI |
+| 📱 **Fully Responsive** | Optimized for mobile, tablet, and desktop |
+| 🎉 **Celebrations** | Confetti animation on task completion |
 
 ---
 
 ## 🛠️ Tech Stack
-| Category | Technology |
-| :--- | :--- |
-| **Frontend** | React 19, Vite |
-| **Styling** | Tailwind CSS 3 (Custom Glassmorphism) |
-| **Animations** | Framer Motion |
-| **Data Viz** | Recharts |
-| **Icons** | Lucide React, HeroIcons |
-| **Backend** | JSON Server (Mock API) |
+
+| Layer | Technology |
+|---|---|
+| **Frontend** | React 19, Vite, Tailwind CSS 3, Framer Motion |
+| **Backend** | Node.js, Express 4, REST API |
+| **Data & State** | Axios, React Context API |
+| **Charts** | Recharts |
+| **Icons** | Lucide React, Heroicons |
+| **Deployment** | Vercel (Frontend) + Render (Backend) |
 
 ---
 
-## 💼 Client Focus: Why This Matters
-As a **Full-Stack Developer**, I built this project to demonstrate:
-1. **Clean Code Architecture**: Modular components and efficient state management.
-2. **Performance Optimization**: 60fps animations and lightweight dependencies.
-3. **Advanced UI/UX**: Professional-grade design using glassmorphism and motion.
-4. **Attention to Detail**: From loading spinners to celebratory confetti and time-based greetings.
+## � Quick Start (Local)
+
+```bash
+# 1. Clone
+git clone https://github.com/DestaShewa/Task-Manager.git
+cd Task-Manager
+
+# 2. Install all dependencies (root + frontend + backend)
+npm install
+
+# 3. Start backend API (port 5000)
+cd backend && npm run server
+
+# 4. In a new terminal — start frontend (port 5173)
+cd frontend && npm run dev
+```
+
+> **Default Admin Login:** `admin@taskmaster.com` / `admin123`
 
 ---
 
-## 🚀 Quick Start
-1. **Clone the repo**
-   ```bash
-   git clone https://github.com/DestaShewa/Task-Manager.git
-   ```
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-3. **Start the server**
-   ```bash
-   npm run server
-   ```
-4. **Run the app**
-   ```bash
-   npm run dev
-   ```
+## � Project Structure
+
+```
+Task-Manager/
+├── frontend/          # React + Vite app
+│   └── src/
+│       ├── components/
+│       ├── pages/
+│       └── services/  # Axios API layer
+├── backend/           # Express REST API
+│   └── api/
+│       ├── routes/
+│       ├── controllers/
+│       └── index.js
+└── package.json       # Root dev scripts
+```
 
 ---
 
-## 📬 Contact & Hire
-**Desta Shewa**  
-*Full-Stack Developer | Available for New Projects*  
-📧 [hire@desta.dev](mailto:hire@desta.dev) | 🔗 [Portfolio](#) | 💼 [Upwork Profile](#)
+## 🌐 API Endpoints
 
---
-*Made with ❤️ for the 2026 Developer Competition*
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/tasks` | Get all tasks |
+| `POST` | `/tasks` | Create a task |
+| `PATCH` | `/tasks/:id` | Update a task |
+| `DELETE` | `/tasks/:id` | Delete a task |
+| `GET` | `/users` | Get all users |
+| `POST` | `/users` | Register a user |
+| `PATCH` | `/users/:id` | Update a user |
+| `DELETE` | `/users/:id` | Delete a user |
+
+---
+
+## � About the Developer
+
+**Desta Shewa** — Full-Stack Developer specializing in React, Node.js, and modern web UX.
+
+I build **fast, beautiful, production-ready** web applications. This project is a live demonstration of:
+- ✅ Clean, scalable code architecture
+- ✅ Professional UI/UX (glassmorphism, animations, responsive design)
+- ✅ Full-stack integration (REST API + React frontend)
+- ✅ Real-world features (auth, admin, multi-user, analytics)
+
+> 🤝 **Available for freelance projects** — let's build something great together!
+
+[![Hire Me on Upwork](https://img.shields.io/badge/�_Hire_on_Upwork-14a800?style=for-the-badge)](https://upwork.com)
+[![Email Me](https://img.shields.io/badge/📧_Email_Me-D44638?style=for-the-badge)](mailto:hire@desta.dev)
+[![Portfolio](https://img.shields.io/badge/🌐_Portfolio-4f46e5?style=for-the-badge)](https://desta.dev)
+
+---
+
+<div align="center">
+  <sub>Made with ❤️ by Desta Shewa • 2026</sub>
+</div>
